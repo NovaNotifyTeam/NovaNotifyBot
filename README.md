@@ -9,9 +9,9 @@ Setup:
 6. Run: `npm start`
 
 Command:  
-/announcement - announcement basic embedded message custom color and Title for message  
-/dmuser - dms a specific user from the bot (unless they have dms off)  
-/dmannounce - dms a announcement to every member besides the ones that have dms off  
-/help - Pulls out a embedded message only to the user who uses this command and shows list of commands along with our Status Page.  
+/announcement - Announcement basic embedded message custom color and Title for message  
+/dmuser - DMs a specific user from the bot (unless they have dms off)  
+/dmannounce - DMs an announcement to every member besides the ones that have dms off  
+/help - Pulls out an embedded message only to the user who uses this command and shows list of commands along with our Status Page.  
 /discord - Sends a message containing a link to the support server.  
 JOIN MY DISCORD: https://discord.gg/rYzgYHXFAX
