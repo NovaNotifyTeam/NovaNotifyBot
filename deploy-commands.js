@@ -1,12 +1,16 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const dmuser = require('./dmuser');
 const dmannounce = require('./dmannounce');
-const announcementmemes = require('./announcementmemes');
+const announcement = require('./announcement');
+const discord = require('./command-discord')
+const help = require('./help');
 
 const commands = [
-  announcementmemes.data,
+  help.data,
+  announcement.data,
   dmuser.data,
-  dmannounce.data
+  dmannounce.data,
+  discord.data
 ];
 
 function processCommands() { 

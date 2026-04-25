@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ActivityType, REST, Routes } = require('discord.js');
 const { processCommands } = require('./deploy-commands');
 
 const client = new Client({
@@ -8,19 +8,25 @@ const client = new Client({
 
 client.on("clientReady", async () => {
     console.log(`${client.user.tag} is online!`);
-
+    try {
+        await client.application.commands.set([]);
+        console.log('Successfully deleted all global commands.');
+    } catch (err) {
+        console.error('Failed to delete global commands:', err);
+    }
     const processedCommands = processCommands();
     for (const command of processedCommands) {
         console.log(`Registering command: ${command.name}`);
         try {
-            await client.application.commands.delete(command);
-            await client.application.commands.create(command);
+            for (const guildId of client.guilds.cache.map(guild => guild.id)) {
+                await client.application.commands.create(command, guildId);
+            }
         } catch (err) {
             console.error(`Failed to register command ${command.name}:`, err);
         }
     }
 
-    client.user.setActivity('Coding Myself', {
+    client.user.setActivity('V1.2', {
         type: ActivityType.Competing
     });
 });
@@ -29,8 +35,8 @@ client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
     switch (interaction.commandName) {
-        case 'announcementmemes':
-            await handleAnnouncementMemes(interaction);
+        case 'announcement':
+            await handleAnnouncement(interaction);
             break;
         case 'dmuser':
             await handleDmUser(interaction);
@@ -38,12 +44,39 @@ client.on('interactionCreate', async interaction => {
         case 'dmannounce':
             await handleDmAnnounce(interaction);
             break;
+        case 'discord':
+            await handleDiscord(interaction);
+            break;
+        case 'help':
+            await handleHelp(interaction);
+            break;
         default:
             break;
     }
 });
 
-async function handleAnnouncementMemes(interaction) {
+async function handleHelp(interaction) {
+    const embed = new EmbedBuilder()
+        .setTitle('NovaNotify Help')
+        .setDescription(`**Available Commands:**\n\n**/announcement** - Send an announcement to the current channel.\n**/dmuser** - DM a specific user with a custom message.\n**/dmannounce** - DM all members of the server with a custom message.\n**/discord** - Get the link to our support Discord server.\nhttps://novanotifystatus.upbot.app\n\nFor detailed usage of each command, please join our Discord for support!`)
+        .setColor('#ff0000')
+        .setTimestamp();
+            
+    await interaction.reply({ embeds: [embed], ephemeral: true });
+}
+
+async function handleDiscord(interaction) {
+    const embed = new EmbedBuilder()
+        .setTitle('Join Our Discord for Support!')
+        .setDescription(`Thank you for choosing **NovaNotify**!\nIf you could please join our discord for future updates that would be much appreciated!\nhttps://discord.gg/rYzgYHXFAX`)
+        .setColor('#e60ee6')
+        .setTimestamp();
+    
+    await interaction.channel.send({ embeds: [embed] });
+    await interaction.reply({ content: '✅ Here\'s the link to our discord!', ephemeral: true });
+}
+
+async function handleAnnouncement(interaction) {
     const title = interaction.options.getString('title');
     const description = interaction.options.getString('message');
     const color = interaction.options.getString('color') || '#00ffcc';
@@ -55,7 +88,6 @@ async function handleAnnouncementMemes(interaction) {
         .setTimestamp();
 
     await interaction.channel.send({ embeds: [embed] });
-    client.user.setActivity(description, { type: ActivityType.Playing });
     await interaction.reply({ content: '✅ Announcement sent!', ephemeral: true });
 }
 
@@ -92,7 +124,7 @@ async function handleDmAnnounce(interaction) {
         .setFooter({ text: `Sent from ${interaction.guild.name}` })
         .setTimestamp();
 
-    await interaction.reply({ content: '📨 Sending DMs to all members... This may take a moment.', ephemeral: true });
+    await interaction.reply({ content: '📨 Sending DMs to **all** members... This may take a moment.', ephemeral: true });
 
     const members = await interaction.guild.members.fetch();
     let sent = 0;
@@ -109,7 +141,7 @@ async function handleDmAnnounce(interaction) {
         }
     }
 
-    await interaction.followUp({ content: '✅ Done!\n📨 Sent: **${sent}**\n❌ Failed: **${failed}**', ephemeral: true });
+    await interaction.followUp({ content: `✅ Done!\n📨 Sent: **${sent}**\n❌ Failed: **${failed}**`, ephemeral: true });
 }
 
 client.login(process.env.TOKEN);
