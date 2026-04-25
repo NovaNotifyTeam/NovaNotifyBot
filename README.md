@@ -4,8 +4,9 @@ Setup:
 1. Install Node.js
 2. Open folder in terminal
 3. Run: `npm install`
-4. Fill in .env file
-5. Run: `npm start`
+4. Rename `.env.example` to `.env`
+5. Fill in `.env` file
+6. Run: `npm start`
 
 Command:
 /announcmentmemes - announcement basic embedded message custom color and Title for message
