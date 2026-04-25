@@ -1,0 +1,14 @@
+{
+  "name": "novanotify",
+  "version": "1.0.0",
+  "description": "Discord Announcement Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "node deploy-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.0.3"
+  }
+}
