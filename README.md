@@ -14,4 +14,4 @@ Command:
 /dmannounce - DMs an announcement to every member besides the ones that have dms off  
 /help - Pulls out an embedded message only to the user who uses this command and shows list of commands along with our Status Page.  
 /discord - Sends a message containing a link to the support server.  
-JOIN MY DISCORD: https://discord.gg/rYzgYHXFAX
+Join our support server for help and information about new releases: https://discord.gg/rYzgYHXFAX
