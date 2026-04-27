@@ -7,7 +7,7 @@ const port = 3000;
 const { processCommands } = require('./deploy-commands');
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Bot is running!');
 });
 
 app.listen(port, () => {
